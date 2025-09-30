@@ -253,7 +253,7 @@ class QrPainter extends CustomPainter {
       if(embeddedImageStyle.embeddedImageShape != EmbeddedImageShape.none) {
         final color = _priorityColor(embeddedImageStyle.shapeColor);
 
-        final squareRect = Rect.fromLTWH(
+        final rect = Rect.fromLTWH(
           embeddedImagePosition.dx,
           embeddedImagePosition.dy,
           embeddedImageSize.width,
@@ -263,20 +263,20 @@ class QrPainter extends CustomPainter {
         final paint = Paint()..color = color;
 
         switch(embeddedImageStyle.embeddedImageShape) {
-          case EmbeddedImageShape.square:
+          case EmbeddedImageShape.rect:
             if(embeddedImageStyle.borderRadius > 0) {
               final roundedRect = RRect.fromRectAndRadius(
-                squareRect,
+                rect,
                 Radius.circular(embeddedImageStyle.borderRadius),
               );
               canvas.drawRRect(roundedRect, paint);
             } else {
-              canvas.drawRect(squareRect, paint);
+              canvas.drawRect(rect, paint);
             }
             break;
           case EmbeddedImageShape.circle:
-            final roundedRect = RRect.fromRectAndRadius(squareRect,
-                Radius.circular(squareRect.width / 2));
+            final roundedRect = RRect.fromRectAndRadius(rect,
+                Radius.circular(rect.width / 2));
             canvas.drawRRect(roundedRect, paint);
             break;
           default:
@@ -604,10 +604,8 @@ class QrPainter extends CustomPainter {
     final paint = Paint()
       ..isAntiAlias = true
       ..filterQuality = FilterQuality.high;
-    if (style != null) {
-      if (style.color != null) {
-        paint.colorFilter = ColorFilter.mode(style.color!, BlendMode.srcATop);
-      }
+    if (style?.color case final color?) {
+      paint.colorFilter = ColorFilter.mode(color, BlendMode.srcOut);
     }
     final srcSize = Size(
       embeddedImage!.width.toDouble(),

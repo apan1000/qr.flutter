@@ -63,8 +63,8 @@ enum EmbeddedImageShape {
   /// Disable
   none,
 
-  /// Use square.
-  square,
+  /// Use rect.
+  rect,
 
   /// Use circular.
   circle,
