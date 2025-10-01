@@ -605,7 +605,7 @@ class QrPainter extends CustomPainter {
       ..isAntiAlias = true
       ..filterQuality = FilterQuality.high;
     if (style?.color case final color?) {
-      paint.colorFilter = ColorFilter.mode(color, BlendMode.srcOut);
+      paint.colorFilter = ColorFilter.mode(color, BlendMode.srcIn);
     }
     final srcSize = Size(
       embeddedImage!.width.toDouble(),
